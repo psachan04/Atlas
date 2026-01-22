@@ -1,0 +1,8 @@
+version: 2
+sources:
+  - name: public
+    database: nps_db
+    schema: public
+    tables:
+      - name: alerts
+      - name: weather_history
