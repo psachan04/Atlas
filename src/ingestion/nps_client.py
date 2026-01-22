@@ -1,31 +1,47 @@
 import httpx
 import os
 from dotenv import load_dotenv
-from src.models.schemas import NPSResponse
+from src.models.schemas import NPSResponse, AlertTable
+from src.shared.database import SessionLocal
 
 load_dotenv()
-
 NPS_API_KEY = os.getenv("NPS_API_KEY")
-BASE_URL = "https://developer.nps.gov/api/v1/alerts"
 
 
-def fetch_park_alerts(park_code: str):
-    params = {
-        "parkCode": park_code,
-        "api_key": NPS_API_KEY
-    }
+def sync_zion_alerts():
+    # 1. Fetch from API
+    url = "https://developer.nps.gov/api/v1/alerts"
+    params = {"parkCode": "zion", "api_key": NPS_API_KEY}
 
     with httpx.Client() as client:
-        response = client.get(BASE_URL, params=params)
-        response.raise_for_status()  # Raise error if API is down
-
-        # Validate data against our schema
+        response = client.get(url, params=params)
+        response.raise_for_status()
+        # Pass raw JSON into our Pydantic filter
         validated_data = NPSResponse(**response.json())
-        return validated_data.data
+
+    # 2. Save to Postgres
+    db = SessionLocal()
+    try:
+        for item in validated_data.data:
+            # Idempotency: Only add if ID doesn't exist
+            exists = db.query(AlertTable).filter(AlertTable.id == item.id).first()
+            if not exists:
+                new_row = AlertTable(
+                    id=item.id,
+                    park_code=item.parkCode,
+                    title=item.title,
+                    description=item.description,
+                    category=item.category,
+                    url=item.url
+                )
+                db.add(new_row)
+        db.commit()
+        print(f"Synced {len(validated_data.data)} alerts for Zion.")
+    except Exception as e:
+        db.rollback()
+    finally:
+        db.close()
 
 
 if __name__ == "__main__":
-    # Test it with Zion (ZION)
-    alerts = fetch_park_alerts("zion")
-    for alert in alerts:
-        print(f"[{alert.category}] {alert.title}")
+    sync_zion_alerts()
