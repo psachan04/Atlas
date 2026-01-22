@@ -1,20 +1,20 @@
-# FieldGuide 🌲
+# Atlas
 
-**FieldGuide** is an end-to-end data + AI system that acts as a personal expedition strategist for visiting U.S. National Parks.
+**Atlas** is an end-to-end data + AI system that acts as a personal expedition strategist for visiting U.S. National Parks.
 
 The goal of this project is to **learn how to design and build a production-style data pipeline**—from raw data ingestion to AI-powered decision support—using modern data engineering tools.
 
 ---
 
-## 🧠 Project Vision
+## Project
 
-FieldGuide goes beyond a static list of parks. It continuously ingests live park alerts and weather data, transforms it into actionable insights, and allows natural-language questions like:
+Atlas goes beyond a static list of parks. It continuously ingests live park alerts and weather data, transforms it into actionable insights, and allows natural-language questions like:
 
 > *“Based on current alerts in Zion and the 3-day forecast, what is the best window for a 10-mile hike?”*
 
 ---
 
-## 🏗️ Architecture Overview
+## 🏗️ Architecture
 
 **Extract**
 - Python API clients
@@ -39,17 +39,6 @@ FieldGuide goes beyond a static list of parks. It continuously ingests live park
 - Retrieval-Augmented Generation (RAG)
 - LLM queries structured data
 - Natural-language recommendations based on real conditions
-
----
-
-## 🧪 Project Status
-
-🚧 **In Progress**
-
-Current focus:
-- Environment setup on macOS
-- Understanding system architecture
-- Building each component step-by-step
 
 ---
 
