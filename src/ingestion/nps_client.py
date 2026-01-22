@@ -8,10 +8,10 @@ load_dotenv()
 NPS_API_KEY = os.getenv("NPS_API_KEY")
 
 
-def sync_zion_alerts():
+def sync_alerts(park_code="zion"):
     # 1. Fetch from API
     url = "https://developer.nps.gov/api/v1/alerts"
-    params = {"parkCode": "zion", "api_key": NPS_API_KEY}
+    params = {"parkCode": park_code, "api_key": NPS_API_KEY}
 
     with httpx.Client() as client:
         response = client.get(url, params=params)
