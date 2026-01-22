@@ -1,0 +1,21 @@
+transform:
+  target: dev  # <--- This is your local default
+  outputs:
+    dev:       # For running 'dbt run' on your Mac
+      type: postgres
+      host: localhost
+      user: atlas_admin
+      password: atlas123
+      port: 8000
+      dbname: nps_db
+      schema: public
+      threads: 1
+    docker:    # For Airflow to use inside the container
+      type: postgres
+      host: db
+      user: atlas_admin
+      password: atlas123
+      port: 5432
+      dbname: nps_db
+      schema: public
+      threads: 1

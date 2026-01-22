@@ -10,6 +10,37 @@ services:
       - "8000:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - nps_network
+
+  airflow:
+    image: apache/airflow:2.10.0-python3.11
+    container_name: nps_airflow
+    # This command initializes the DB, creates the user safely, and starts Airflow
+    command: >
+      bash -c "airflow db init &&
+      (airflow users create --username admin --firstname Atlas --lastname Admin --role Admin --email admin@example.com --password admin || true) &&
+      airflow standalone"
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://atlas_admin:atlas123@db:5432/nps_db
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - PYTHONPATH=/opt/airflow
+    volumes:
+      - ${PWD}/dags:/opt/airflow/dags:z
+      - ${PWD}/src:/opt/airflow/src:z
+      - ${PWD}/transform:/opt/airflow/transform:z
+      - ${PWD}/.env:/opt/airflow/.env:z
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - nps_network
+
+networks:
+  nps_network:
+    driver: bridge
 
 volumes:
   postgres_data:
