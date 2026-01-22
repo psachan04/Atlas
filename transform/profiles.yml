@@ -1,0 +1,12 @@
+transform:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: db  # <--- Critical: use the service name from docker-compose
+      user: atlas_admin
+      password: atlas123
+      port: 5432 # <--- Internal Docker port
+      dbname: nps_db
+      schema: public
+      threads: 1
