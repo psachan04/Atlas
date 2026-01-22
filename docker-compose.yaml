@@ -10,6 +10,41 @@ services:
       - "8000:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - nps_network
+
+  airflow:
+    image: apache/airflow:2.10.0-python3.11
+    container_name: nps_airflow
+    command: >
+      bash -c "pip install dbt-postgres httpx pydantic python-dotenv sqlalchemy psycopg2-binary &&
+               airflow standalone"
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      # Use 'db' as the host because they are on the same network
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://atlas_admin:atlas123@db:5432/nps_db
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__CORE__FERNET_KEY=  # Optional: leave blank for dev
+      # Allow src module imports in DAGs
+      - PYTHONPATH=/opt/airflow
+      # Pass through API key and DB URL for ingestion scripts
+      - NPS_API_KEY=${NPS_API_KEY}
+      - DATABASE_URL=postgresql://atlas_admin:atlas123@db:5432/nps_db
+    volumes:
+      - ${PWD}/dags:/opt/airflow/dags
+      - ${PWD}/src:/opt/airflow/src
+      - ${PWD}/transform:/opt/airflow/transform
+      - ${PWD}/.env:/opt/airflow/.env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - nps_network
+
+networks:
+  nps_network:
+    driver: bridge
 
 volumes:
   postgres_data:
