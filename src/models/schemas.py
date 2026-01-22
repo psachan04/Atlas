@@ -1,11 +1,10 @@
 from pydantic import BaseModel, Field
 from typing import Optional, List
-from sqlalchemy import Column, String, Text, DateTime
+from sqlalchemy import Column, String, Text, DateTime, Integer
 from sqlalchemy.orm import declarative_base
 from datetime import datetime
 
-# --- DATABASE MODEL (The Vault) ---
-# This defines the table structure in PostgreSQL.
+# Defines the table structure in PostgreSQL.
 Base = declarative_base()
 
 class AlertTable(Base):
@@ -19,8 +18,7 @@ class AlertTable(Base):
     url = Column(String, nullable=True)
     updated_at = Column(DateTime, default=datetime.utcnow)
 
-# --- VALIDATION MODELS (The Filter) ---
-# This checks the data coming in from the API before it hits the DB.
+# Checks the data coming in from the API before it hits the DB.
 class NPSAlert(BaseModel):
     id: str
     parkCode: str
@@ -32,3 +30,24 @@ class NPSAlert(BaseModel):
 class NPSResponse(BaseModel):
     """The NPS API always returns a dictionary with a 'data' list."""
     data: List[NPSAlert]
+
+class WeatherTable(Base):
+    __tablename__ = "weather_history"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    park_code = Column(String, index=True)
+    forecast_date = Column(DateTime)
+    temperature = Column(Integer)
+    wind_speed = Column(String)
+    short_forecast = Column(String)
+    extracted_at = Column(DateTime, default=datetime.utcnow)
+
+# --- Add this to your Pydantic Models ---
+class WeatherPeriod(BaseModel):
+    startTime: datetime
+    temperature: int
+    windSpeed: str
+    shortForecast: str
+
+class WeatherForecastResponse(BaseModel):
+    properties: dict  # Extract the 'periods' list from this dict
