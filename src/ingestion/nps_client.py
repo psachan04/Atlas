@@ -7,7 +7,6 @@ from src.shared.database import SessionLocal
 load_dotenv()
 NPS_API_KEY = os.getenv("NPS_API_KEY")
 
-
 def sync_alerts(park_code="zion"):
     # 1. Fetch from API
     url = "https://developer.nps.gov/api/v1/alerts"
@@ -44,4 +43,4 @@ def sync_alerts(park_code="zion"):
 
 
 if __name__ == "__main__":
-    sync_zion_alerts()
+    sync_alerts()

@@ -1,4 +1,5 @@
 import sys
+import os
 from pathlib import Path
 from datetime import datetime, timedelta
 
@@ -39,12 +40,19 @@ def nps_expedition_planner():
 
     @task()
     def run_dbt_transform():
+        import os
         # Run dbt inside the container
         result = subprocess.run(
-            ["dbt", "run", "--profiles-dir", "/opt/airflow/transform", "--project-dir", "/opt/airflow/transform"],
+            [
+                "dbt", "run",
+                "--profiles-dir", "/opt/airflow/transform",
+                "--project-dir", "/opt/airflow/transform",
+                "--target", "docker"
+            ],
             capture_output=True, text=True
         )
         if result.returncode != 0:
+            print(result.stdout)
             raise Exception(f"dbt failed: {result.stderr}")
         print(result.stdout)
 
