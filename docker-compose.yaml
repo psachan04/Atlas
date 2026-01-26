@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:16-alpine
+    image: pgvector/pgvector:pg16
     container_name: nps_postgres
     environment:
       POSTGRES_USER: atlas_admin
@@ -10,6 +10,12 @@ services:
       - "8000:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./init_pgvector.sql:/docker-entrypoint-initdb.d/init_pgvector.sql
+    healthcheck: # ← ADD THESE LINES
+      test: [ "CMD-SHELL", "pg_isready -U atlas_admin -d nps_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - nps_network
 
@@ -36,9 +42,38 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - nps_network
+
+  rangergpt:
+      build:
+        context: .
+        dockerfile: Dockerfile.rangergpt
+      container_name: nps_rangergpt
+      environment:
+        - GEMINI_API_KEY=${GEMINI_API_KEY}
+        - DB_HOST=db
+        - DB_PORT=5432
+        - DB_NAME=nps_db
+        - DB_USER=atlas_admin
+        - DB_PASSWORD=atlas123
+        - PYTHONPATH=/app
+      volumes:
+        - ${PWD}/src:/app/src:z
+        - ${PWD}/scripts:/app/scripts:z
+        - ${PWD}/transform:/app/transform:z
+        - ${PWD}/.env:/app/.env:z
+      depends_on:
+        db:
+          condition: service_healthy
+      networks:
+        - nps_network
+      stdin_open: true
+      tty: true
+      # Keep container running for interactive use
+      command: tail -f /dev/null
 
 networks:
   nps_network:
