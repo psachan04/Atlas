@@ -14,7 +14,8 @@ services:
       - nps_network
 
   airflow:
-    image: apache/airflow:2.10.0-python3.11
+    # image: apache/airflow:2.10.0-python3.11
+    build: .
     container_name: nps_airflow
     # This command initializes the DB, creates the user safely, and starts Airflow
     command: >
@@ -22,6 +23,7 @@ services:
       (airflow users create --username admin --firstname Atlas --lastname Admin --role Admin --email admin@example.com --password admin || true) &&
       airflow standalone"
     environment:
+      # - _PIP_ADDITIONAL_DEPENDENCIES=dbt-postgres
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://atlas_admin:atlas123@db:5432/nps_db
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
