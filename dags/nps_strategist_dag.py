@@ -41,6 +41,7 @@ def nps_expedition_planner():
     @task()
     def run_dbt_transform():
         import os
+        import subprocess
         # Run dbt inside the container
         result = subprocess.run(
             [
