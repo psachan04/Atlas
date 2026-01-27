@@ -7,7 +7,7 @@ from src.shared.database import SessionLocal
 load_dotenv()
 NPS_API_KEY = os.getenv("NPS_API_KEY")
 
-def sync_alerts(park_code="zion"):
+def sync_alerts(park_code):
     # 1. Fetch from API
     url = "https://developer.nps.gov/api/v1/alerts"
     params = {"parkCode": park_code, "api_key": NPS_API_KEY}
@@ -27,7 +27,7 @@ def sync_alerts(park_code="zion"):
             if not exists:
                 new_row = AlertTable(
                     id=item.id,
-                    park_code=item.parkCode,
+                    park_code=park_code.upper(),
                     title=item.title,
                     description=item.description,
                     category=item.category,
@@ -38,6 +38,7 @@ def sync_alerts(park_code="zion"):
         print(f"Synced {len(validated_data.data)} alerts for Zion.")
     except Exception as e:
         db.rollback()
+        raise
     finally:
         db.close()
 
