@@ -4,3 +4,36 @@ __pycache__/
 target/
 logs/
 *.db
+
+# --- AI Agents & Tools ---
+# Exclude all hidden AI tool directories
+.agent/
+.agents/
+.claude/
+.cline/
+.codebuddy/
+.codex/
+.commandcode/
+.continue/
+.crush/
+.cursor/
+.factory/
+.gemini/
+.goose/
+.junie/
+.kilocode/
+.kiro/
+.kode/
+.mcpjam/
+.mux/
+.neovate/
+.opencode/
+.openhands/
+.pi/
+.pochi/
+.qoder/
+.qwen/
+.roo/
+.trae/
+.windsurf/
+.zencoder/
