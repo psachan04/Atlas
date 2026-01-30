@@ -4,6 +4,7 @@ __pycache__/
 target/
 logs/
 *.db
+idea/
 
 # --- AI Agents & Tools ---
 # Exclude all hidden AI tool directories

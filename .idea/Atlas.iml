@@ -2,9 +2,41 @@
 <module type="PYTHON_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/.agent" />
+      <excludeFolder url="file://$MODULE_DIR$/.agents" />
+      <excludeFolder url="file://$MODULE_DIR$/.claude" />
+      <excludeFolder url="file://$MODULE_DIR$/.cline" />
+      <excludeFolder url="file://$MODULE_DIR$/.codebuddy" />
+      <excludeFolder url="file://$MODULE_DIR$/.codex" />
+      <excludeFolder url="file://$MODULE_DIR$/.commandcode" />
+      <excludeFolder url="file://$MODULE_DIR$/.continue" />
+      <excludeFolder url="file://$MODULE_DIR$/.crush" />
+      <excludeFolder url="file://$MODULE_DIR$/.cursor" />
+      <excludeFolder url="file://$MODULE_DIR$/.factory" />
+      <excludeFolder url="file://$MODULE_DIR$/.gemini" />
+      <excludeFolder url="file://$MODULE_DIR$/.github" />
+      <excludeFolder url="file://$MODULE_DIR$/.goose" />
+      <excludeFolder url="file://$MODULE_DIR$/.junie" />
+      <excludeFolder url="file://$MODULE_DIR$/.kilocode" />
+      <excludeFolder url="file://$MODULE_DIR$/.kiro" />
+      <excludeFolder url="file://$MODULE_DIR$/.kode" />
+      <excludeFolder url="file://$MODULE_DIR$/.mcpjam" />
+      <excludeFolder url="file://$MODULE_DIR$/.mux" />
+      <excludeFolder url="file://$MODULE_DIR$/.neovate" />
+      <excludeFolder url="file://$MODULE_DIR$/.opencode" />
+      <excludeFolder url="file://$MODULE_DIR$/.openhands" />
+      <excludeFolder url="file://$MODULE_DIR$/.pi" />
+      <excludeFolder url="file://$MODULE_DIR$/.pochi" />
+      <excludeFolder url="file://$MODULE_DIR$/.qoder" />
+      <excludeFolder url="file://$MODULE_DIR$/.qwen" />
+      <excludeFolder url="file://$MODULE_DIR$/.roo" />
+      <excludeFolder url="file://$MODULE_DIR$/.trae" />
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
+      <excludeFolder url="file://$MODULE_DIR$/.windsurf" />
+      <excludeFolder url="file://$MODULE_DIR$/.zencoder" />
+      <excludeFolder url="file://$MODULE_DIR$/skills" />
     </content>
-    <orderEntry type="jdk" jdkName="uv (Atlas)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="uv (Atlas) (2)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
