@@ -1,14 +1,14 @@
 {{ config(materialized='table') }}
 
 WITH latest_weather AS (
-    SELECT
+    SELECT DISTINCT ON (park_code)
         park_code,
         forecast_date,
         temperature,
         short_forecast,
         extracted_at
     FROM {{ source('public', 'weather_history') }}
-    WHERE extracted_at = (SELECT MAX(extracted_at) FROM {{ source('public', 'weather_history') }})
+    ORDER BY park_code, extracted_at DESC
 ),
 
 active_alerts AS (
