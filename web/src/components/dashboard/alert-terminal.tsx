@@ -38,12 +38,6 @@ function formatTimestamp(dateStr: string): string {
 export function AlertTerminal({ alerts }: AlertTerminalProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
-  }, [alerts]);
-
   return (
     <div
       className="bento-card p-5 animate-fade-in-up"

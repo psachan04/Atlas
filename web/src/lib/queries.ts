@@ -64,6 +64,11 @@ export async function getHikeReadiness(): Promise<HikeReadiness[]> {
  */
 export async function getReadinessStats(): Promise<ReadinessStats> {
   const rows = await query<ReadinessStats>(`
+    WITH unique_readiness AS (
+      SELECT DISTINCT ON (park_code) *
+      FROM fct_hike_readiness
+      ORDER BY park_code, calculated_at DESC
+    )
     SELECT
       COUNT(*)::int as total_parks,
       COUNT(*) FILTER (WHERE readiness_status = 'Ready')::int as ready_count,
@@ -74,7 +79,7 @@ export async function getReadinessStats(): Promise<ReadinessStats> {
       )::int as ready_pct,
       ROUND(AVG(temperature))::int as avg_temperature,
       SUM(alert_count)::int as total_alerts
-    FROM fct_hike_readiness
+    FROM unique_readiness
   `);
   return (
     rows[0] || {
