@@ -26,9 +26,9 @@ export default async function Dashboard() {
       <Header fetchedAt={data.fetchedAt} />
 
       {/* Main Content */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-col lg:flex-row flex-1 overflow-y-auto lg:overflow-hidden">
         {/* Left: Dashboard Grid (70%) */}
-        <main className="flex-1 overflow-y-auto p-5">
+        <main className="flex-none lg:flex-1 lg:overflow-y-auto p-5">
           <div className="max-w-[1200px] mx-auto space-y-4">
             {/* Row 1: KPI Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -81,8 +81,8 @@ export default async function Dashboard() {
         </main>
 
         {/* Right: Strategist AI Chat (30%) */}
-        <aside className="w-[380px] border-l border-[rgba(255,255,255,0.06)] flex-shrink-0 hidden lg:flex">
-          <div className="w-full">
+        <aside className="w-full lg:w-[380px] h-[600px] lg:h-auto border-t lg:border-t-0 lg:border-l border-[rgba(255,255,255,0.06)] flex-shrink-0 flex flex-col px-5 pb-5 lg:p-0 mt-4 lg:mt-0">
+          <div className="w-full h-full">
             <StrategistChat />
           </div>
         </aside>
